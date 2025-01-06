@@ -1,5 +1,5 @@
 [workspace]
-members = ["crate_segment_path", "folder_in_src", "generics", "responses", "utility"]
+members = ["crate_segment_path", "folder_in_src", "generics", "import_from_workspace", "lib_of_openapi", "responses", "utility"]
 resolver = "2"
 
 [workspace.package]

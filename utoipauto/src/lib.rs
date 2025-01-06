@@ -17,7 +17,7 @@ mod test {
     pub fn route3() {}
 
     /// Discover from the crate root auto
-    #[utoipauto(paths = "./utoipauto/src")]
+    #[utoipauto]
     #[derive(OpenApi)]
     #[openapi(info(title = "Percentage API", version = "1.0.0"))]
     pub struct CrateAutoApiDocs {}

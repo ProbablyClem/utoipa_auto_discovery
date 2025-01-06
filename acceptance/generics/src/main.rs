@@ -6,7 +6,7 @@ use routes::*;
 use utoipa::OpenApi;
 use utoipauto::utoipauto;
 
-#[utoipauto(paths = "./generics/src")]
+#[utoipauto]
 #[derive(Debug, OpenApi)]
 #[openapi(info(title = "Generic Test Api"))]
 pub(crate) struct ApiDoc;

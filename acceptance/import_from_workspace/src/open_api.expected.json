@@ -1,0 +1,43 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Import form generics test.",
+        "description": "A collection of crates to test utoipauto.",
+        "contact": {
+            "name": "ProbablyClem"
+        },
+        "license": {
+            "name": "MIT OR Apache-2.0"
+        },
+        "version": "0.1.0"
+    },
+    "paths": {},
+    "components": {
+        "schemas": {
+            "Schema1": {
+                "type": "integer",
+                "format": "int32",
+                "minimum": 0
+            },
+            "Schema2": {
+                "type": "integer",
+                "format": "int32",
+                "minimum": 0
+            },
+            "Schema3": {
+                "type": "integer",
+                "format": "int32",
+                "minimum": 0
+            },
+            "Schema4": {
+                "type": "integer",
+                "format": "int64",
+                "minimum": 0
+            },
+            "Schema5": {
+                "type": "integer",
+                "minimum": 0
+            }
+        }
+    }
+}

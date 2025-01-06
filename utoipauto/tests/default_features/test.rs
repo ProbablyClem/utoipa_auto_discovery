@@ -6,7 +6,7 @@ use crate::default_features::controllers;
 
 // Discover from multiple controllers
 #[utoipauto(
-    paths = "( crate::controllers::controller1 => ./utoipauto/tests/default_features/controllers/controller1.rs) ; ( crate::controllers::controller2 => ./utoipauto/tests/default_features/controllers/controller2.rs )"
+    paths = "( crate::controllers::controller1 => ./tests/default_features/controllers/controller1.rs) ; ( crate::controllers::controller2 => ./tests/default_features/controllers/controller2.rs )"
 )]
 #[derive(OpenApi)]
 #[openapi(info(title = "Percentage API", version = "1.0.0"))]
@@ -18,9 +18,7 @@ fn test_path_import() {
 }
 
 /// Discover from a single controller
-#[utoipauto(
-    paths = "( crate::controllers::controller1 => ./utoipauto/tests/default_features/controllers/controller1.rs)"
-)]
+#[utoipauto(paths = "( crate::controllers::controller1 => ./tests/default_features/controllers/controller1.rs)")]
 #[derive(OpenApi)]
 #[openapi(info(title = "Percentage API", version = "1.0.0"))]
 pub struct SingleControllerApiDocs {}
@@ -31,7 +29,7 @@ fn test_ignored_path() {
 }
 
 /// Discover with manual path
-#[utoipauto(paths = "./utoipauto/tests/default_features/controllers/controller1.rs")]
+#[utoipauto(paths = "./tests/default_features/controllers/controller1.rs")]
 #[derive(OpenApi)]
 #[openapi(
     info(title = "Percentage API", version = "1.0.0"),
@@ -45,7 +43,7 @@ fn test_manual_path() {
 }
 
 /// Discover from a module root
-#[utoipauto(paths = "( crate::controllers => ./utoipauto/tests/default_features/controllers)")]
+#[utoipauto(paths = "( crate::controllers => ./tests/default_features/controllers)")]
 #[derive(OpenApi)]
 #[openapi(info(title = "Percentage API", version = "1.0.0"))]
 pub struct ModuleApiDocs {}
@@ -56,7 +54,7 @@ fn test_module_import_path() {
 }
 
 /// Discover from the crate root
-#[utoipauto(paths = "./utoipauto/tests/default_features")]
+#[utoipauto(paths = "./tests/default_features")]
 #[derive(OpenApi)]
 #[openapi(info(title = "Percentage API", version = "1.0.0"))]
 pub struct CrateApiDocs {}
@@ -68,7 +66,7 @@ fn test_crate_import_path() {
 
 // Discover from multiple controllers new syntax
 #[utoipauto(
-    paths = "./utoipauto/tests/default_features/controllers/controller1.rs, ./utoipauto/tests/default_features/controllers/controller2.rs"
+    paths = "./tests/default_features/controllers/controller1.rs, ./tests/default_features/controllers/controller2.rs"
 )]
 #[derive(OpenApi)]
 #[openapi(info(title = "Percentage API", version = "1.0.0"))]
@@ -80,7 +78,7 @@ fn test_path_import_no_module() {
 }
 
 // Discover from multiple controllers new syntax
-#[utoipauto(paths = "./utoipauto/tests/default_features/models.rs")]
+#[utoipauto(paths = "./tests/default_features/models.rs")]
 #[derive(OpenApi)]
 #[openapi(info(title = "Percentage API", version = "1.0.0"))]
 pub struct ModelsImportApiDocs {}
@@ -98,7 +96,7 @@ fn test_path_import_schema() {
 }
 
 // Discover from multiple controllers new syntax
-#[utoipauto(paths = "./utoipauto/tests/default_features/models.rs")]
+#[utoipauto(paths = "./tests/default_features/models.rs")]
 #[derive(OpenApi)]
 #[openapi(info(title = "Percentage API", version = "1.0.0"))]
 pub struct ResponsesImportApiDocs {}
@@ -117,7 +115,7 @@ fn test_path_import_responses() {
 
 /// Discover custom handler
 #[utoipauto(
-    paths = "./utoipauto/tests/default_features/controllers/controller3.rs",
+    paths = "./tests/default_features/controllers/controller3.rs",
     function_attribute_name = "test_handler"
 )]
 #[derive(OpenApi)]

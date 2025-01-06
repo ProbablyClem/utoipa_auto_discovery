@@ -95,20 +95,55 @@ The paths receives a String which must respect this structure :
 
 You can add several paths by separating them with a coma `","`.
 
-## Usage with workspaces
+## `utoipauto` Macro Attributes
 
-If you are using a workspace, you must specify the name of the crate in the path.
-<br>
-This applies even if you are using `#[utoipauto]` in the same crate.
+All attributes are optional!
+The `utoipauto` macro supports several attributes to customize its behavior:
+
+- **`paths`**: Specifies the paths to scan for functions and structs. If no path is specified, the macro will
+  automatically scan the `src` folder.
 
 ```rust
-#[utoipauto(paths = "./utoipauto/src")]
+#[utoipauto(paths = "./src/rest")]
 ```
 
-You can specify that the specified paths are from another crate by using the from key work.
+- **convert_to_full_path**: When set to false, it allows importing from another crate without converting to a full path.
+  Defaults to `true`.
 
 ```rust
-#[utoipauto(paths = "./utoipauto/src from utoipauto")]
+#[utoipauto(paths = "./utoipauto/src from utoipauto", convert_to_full_path = false)]
+```
+
+- **function_attribute_name**: Specifies a custom attribute to look for instead of the default #[utoipa::path(...)].
+
+```rust
+#[utoipauto(function_attribute_name = "handler")] 
+```
+
+- **schema_attribute_name**: Specifies a custom derive attribute for model detection instead of the default ToSchema.
+
+```rust
+#[utoipauto(schema_attribute_name = "Schema")]
+```
+
+- **response_attribute_name**: Specifies a custom derive attribute for response detection instead of the default
+  ToResponse.
+
+```rust
+#[utoipauto(response_attribute_name = "Response")]
+```
+
+These attributes allow you to tailor the macro's behavior to fit your project's structure and naming conventions
+
+## Usage with workspaces
+
+If you are using a workspace, it just works out of the box.
+
+If you want to import from another crate you have to specify the crate, the path and set `convert_to_full_path` to
+`false`.
+
+```rust
+#[utoipauto(paths = "./utoipauto/src from utoipauto", convert_to_full_path = false)]
 ```
 
 ### Import from src folder
@@ -266,7 +301,7 @@ pub fn custom_router() {
 
 #[utoipauto(function_attribute_name = "handler")] //Custom attribute
 #[derive(OpenApi)]
-#[openapi(tags()))]
+# [openapi(tags()))]
 pub struct ApiDoc;
 
 ```

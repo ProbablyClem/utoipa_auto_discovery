@@ -8,6 +8,7 @@ pub struct Parameters {
     pub fn_attribute_name: String,
     pub schema_attribute_name: String,
     pub response_attribute_name: String,
+    pub convert_to_full_path: bool,
 }
 
 /// Extract the paths string attribute from the proc_macro::TokenStream
@@ -17,13 +18,15 @@ pub fn extract_attributes(stream: proc_macro2::TokenStream) -> Parameters {
     let paths = extract_attribute("paths", stream.clone());
     let fn_attribute_name = extract_attribute("function_attribute_name", stream.clone());
     let schema_attribute_name = extract_attribute("schema_attribute_name", stream.clone());
-    let response_attribute_name = extract_attribute("response_attribute_name", stream);
+    let response_attribute_name = extract_attribute("response_attribute_name", stream.clone());
+    let convert_to_full_path = extract_bool_attribute("convert_to_full_path", stream);
     // if no paths specified, we use the default path "./src"
     Parameters {
         paths: paths.unwrap_or("./src".to_string()),
         fn_attribute_name: fn_attribute_name.unwrap_or("utoipa".to_string()),
         schema_attribute_name: schema_attribute_name.unwrap_or("ToSchema".to_string()),
         response_attribute_name: response_attribute_name.unwrap_or("ToResponse".to_string()),
+        convert_to_full_path: convert_to_full_path.unwrap_or(true),
     }
 }
 
@@ -35,6 +38,25 @@ fn extract_attribute(name: &str, stream: proc_macro2::TokenStream) -> Option<Str
         if has_value {
             if let proc_macro2::TokenTree::Literal(lit) = token {
                 return Some(get_content(lit));
+            }
+        }
+        if let proc_macro2::TokenTree::Ident(ident) = token {
+            if ident.to_string().eq(name) {
+                has_value = true;
+            }
+        }
+    }
+    None
+}
+
+fn extract_bool_attribute(name: &str, stream: proc_macro2::TokenStream) -> Option<bool> {
+    let mut has_value = false;
+
+    for token in stream {
+        if has_value {
+            if let proc_macro2::TokenTree::Ident(ident) = token {
+                let value = ident.to_string();
+                return Some(value.parse::<bool>().unwrap());
             }
         }
         if let proc_macro2::TokenTree::Ident(ident) = token {

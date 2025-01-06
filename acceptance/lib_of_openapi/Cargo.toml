@@ -1,0 +1,14 @@
+[package]
+name = "lib_of_openapi"
+authors.workspace = true
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+description.workspace = true
+readme.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+[dependencies]
+utoipa.workspace = true

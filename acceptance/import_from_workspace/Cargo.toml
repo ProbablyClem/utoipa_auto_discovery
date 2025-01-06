@@ -1,0 +1,20 @@
+[package]
+name = "import_from_workspace"
+authors.workspace = true
+version.workspace = true
+edition.workspace = true
+publish.workspace = true
+description.workspace = true
+readme.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+
+[dependencies]
+utoipa.workspace = true
+utoipauto = { workspace = true }
+
+lib_of_openapi = { path = "../lib_of_openapi" }
+
+[dev-dependencies]
+utility.workspace = true

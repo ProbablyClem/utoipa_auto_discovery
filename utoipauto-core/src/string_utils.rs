@@ -38,7 +38,7 @@ pub fn trim_parentheses(str: &str) -> String {
 ///  vec![
 ///    "./utoipa-auto-macro/tests/controllers/controller1.rs".to_string(),
 ///   "./utoipa-auto-macro/tests/controllers/controller2.rs".to_string(),
-/// ]   
+/// ]
 /// );
 /// ```
 pub fn extract_paths(attributes: &str) -> Vec<String> {
@@ -94,7 +94,7 @@ pub fn discover(paths: Vec<String>, params: &Parameters) -> (String, String, Str
     let mut uto_models: String = String::new();
     let mut uto_responses: String = String::new();
     for p in paths {
-        let path = extract_crate_name(p);
+        let path = extract_crate_name(p, params.convert_to_full_path);
         let (list_fn, list_model, list_reponse) = discover_from_file(path.paths, path.crate_name, params);
         // We need to add a coma after each path
         for i in list_fn {
@@ -116,13 +116,28 @@ struct Path {
     crate_name: String,
 }
 
-fn extract_crate_name(path: String) -> Path {
+fn extract_crate_name(path: String, convert_to_full_path: bool) -> Path {
+    let convert_to_full_path = convert_to_full_path && !path.contains(" from ");
     let mut path = path.split(" from ");
+
     let paths = path.next().unwrap();
+    let paths = match convert_to_full_path {
+        true => convert_to_absolute_path(paths),
+        false => paths.to_string(),
+    };
     let crate_name = path.next().unwrap_or("crate").to_string();
-    Path {
-        paths: paths.to_string(),
-        crate_name,
+    Path { paths, crate_name }
+}
+
+fn convert_to_absolute_path(path: &str) -> String {
+    match std::env::var("CARGO_MANIFEST_DIR") {
+        Ok(mut manifest_dir) => {
+            let path = path.strip_prefix(".").unwrap_or(path).to_string();
+            manifest_dir.push_str(path.as_str());
+
+            manifest_dir
+        }
+        Err(_) => path.to_string(),
     }
 }
 
@@ -142,6 +157,7 @@ mod test {
         assert_eq!(
             super::extract_crate_name(
                 "utoipa_auto_macro::from::controllers::controller1 from utoipa_auto_macro".to_string(),
+                false
             ),
             super::Path {
                 paths: "utoipa_auto_macro::from::controllers::controller1".to_string(),
@@ -153,7 +169,7 @@ mod test {
     #[test]
     fn test_extract_crate_name_default() {
         assert_eq!(
-            super::extract_crate_name("utoipa_auto_macro::from::controllers::controller1".to_string()),
+            super::extract_crate_name("utoipa_auto_macro::from::controllers::controller1".to_string(), false),
             super::Path {
                 paths: "utoipa_auto_macro::from::controllers::controller1".to_string(),
                 crate_name: "crate".to_string()
